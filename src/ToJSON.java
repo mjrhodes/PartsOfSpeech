@@ -12,7 +12,7 @@ import java.util.Hashtable;
 public class ToJSON {
 
     public static void main(String[] args) {
-        ToJSON tj = new ToJSON();
+        //Temporary Main
         String[] obs = new String[] {"normal", "cold", "dizzy"};
         String[] states = new String[] {"Healthy", "Fever"};
 
@@ -50,22 +50,17 @@ public class ToJSON {
         emit_p.put("Fever", emit_p_2);
         //---- end ----
 
-        tj.serialize(obs, "obs");
-        tj.serialize(states, "states");
-        tj.serialize(start_p, "start_p");
-        tj.serialize(trans_p, "trans_p");
-        tj.serialize(emit_p, "emit_p");
+        ToJSON.serialize(obs, "obs");
+        ToJSON.serialize(states, "states");
+        ToJSON.serialize(start_p, "start_p");
+        ToJSON.serialize(trans_p, "trans_p");
+        ToJSON.serialize(emit_p, "emit_p");
 
         JavaRunCommand.run();
     }
 
-    Gson gson;
-
-    public ToJSON() {
-        gson = new Gson();
-    }
-
-    public void serialize(Object o, String fileName) {
+    public static void serialize(Object o, String fileName) {
+        Gson gson = new Gson();
         File file = new File(fileName + ".json");
         PrintWriter pw = null;
         try {
