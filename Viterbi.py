@@ -13,7 +13,7 @@ def main():
         trans_p = json.load(trans_p_data)
     with open('emit_p.json') as emit_p_data:
         emit_p = json.load(emit_p_data)
-    print_stuff(obs, states, start_p, trans_p, emit_p)
+    viterbi(obs, states, start_p, trans_p, emit_p)
 
 
 def viterbi(obs, states, start_p, trans_p, emit_p):
