@@ -8,20 +8,14 @@ import java.util.*;
  * Created by michael on 6/8/17.
  */
 public class Parser {
-    ArrayList<String> obs;
-    ArrayList<String> states;
-    Dictionary<String, Double> start_p;
-    Dictionary<String, Dictionary<String, Double>> trans_p;
-    Dictionary<String, Dictionary<String, Double>> emit_p;
     ArrayList<POS> posA;
+    Set<String> words;
+    Set<String> labels;
 
     public Parser() {
-        obs = new ArrayList<>();
-        states = new ArrayList<>();
-        start_p = new Hashtable<>();
-        trans_p = new Hashtable<>();
-        emit_p = new Hashtable<>();
         posA = new ArrayList<>();
+        words = new HashSet<>();
+        labels = new HashSet<>();
     }
 
     public void parse(String fileName) {
@@ -38,36 +32,44 @@ public class Parser {
             String element = s.next();
             String word = getWord(element).toLowerCase();
             String label = getLabel(element);
-            int index = POSindex(prevPOS);
+
+            words.add(word);
+            labels.add(label);
+
+            //Add word to part of speech stored in posA or add if not there
+            int index = POSindex(label);
             if (index == -1) {
-                POS newPos = new POS(prevPOS);
-                newPos.add(label);
+                POS newPos = new POS(label);
+                newPos.addWord(word);
                 posA.add(newPos);
             } else {
-                posA.get(index).add(label);
+                posA.get(index).addWord(word);
+            }
+
+            //Add follower to part of speech stored in posA or add if not there
+            index = POSindex(prevPOS);
+            if (index == -1) {
+                POS newPos = new POS(prevPOS);
+                newPos.addFollower(label);
+                posA.add(newPos);
+            } else {
+                posA.get(index).addFollower(label);
+
             }
             prevPOS = label;
         }
     }
 
-    public ArrayList<String> getObs() {
-        return obs;
+    public ArrayList<POS> getPosA() {
+        return posA;
     }
 
-    public ArrayList<String> getStates() {
-        return states;
+    public Set<String> getWords() {
+        return words;
     }
 
-    public Dictionary<String, Double> getStart_p() {
-        return start_p;
-    }
-
-    public Dictionary<String, Dictionary<String, Double>> getTrans_p() {
-        return trans_p;
-    }
-
-    public Dictionary<String, Dictionary<String, Double>> getEmit_p() {
-        return emit_p;
+    public Set<String> getLabels() {
+        return labels;
     }
 
     private String getWord(String element) {

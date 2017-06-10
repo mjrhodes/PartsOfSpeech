@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.util.Dictionary;
@@ -60,7 +61,7 @@ public class ToJSON {
     }
 
     public static void serialize(Object o, String fileName) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(fileName + ".json");
         PrintWriter pw = null;
         try {

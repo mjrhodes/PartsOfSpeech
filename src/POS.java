@@ -1,42 +1,60 @@
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 
 /**
  * Created by michael on 6/9/17.
  */
 public class POS {
     String name;
-    Dictionary<String, Counter> next_p;
+    Dictionary<String, Counter> followers;
+    Dictionary<String, Counter> words;
+    int totalFollowers;
+    int totalWords;
 
     public POS(String name) {
         this.name = name;
-        next_p = new Hashtable<>();
+        followers = new Hashtable<>();
+        words = new Hashtable<>();
+        totalFollowers = 0;
+        totalWords = 0;
     }
 
     public String getName() {
         return name;
     }
 
-    public Dictionary<String, Counter> getNext_p() {
-        return next_p;
+    public Dictionary<String, Counter> getFollowers() {
+        return followers;
     }
 
-    public void add(String POSname) {
-        if (hasKey(POSname)) {
-            Counter value = next_p.get(POSname);
-            value.inc();
+    public Dictionary<String, Counter> getWords() {
+        return words;
+    }
+
+    public int getTotalFollowers() {
+        return totalFollowers;
+    }
+
+    public int getTotalWords() {
+        return totalWords;
+    }
+
+    public void addFollower(String POSname) {
+        Counter value = followers.get(POSname);
+        if (value == null) {
+            followers.put(POSname, new Counter(1));
         } else {
-            next_p.put(POSname, new Counter(1));
+            value.inc();
         }
+        totalFollowers++;
     }
 
-    private boolean hasKey(String arg) {
-        Enumeration<String> key = next_p.keys();
-        while(key.hasMoreElements()) {
-            if (key.nextElement().equals(arg)) return true;
+    public void addWord(String word) {
+        Counter value = words.get(word);
+        if (value == null) {
+            words.put(word, new Counter(1));
+        } else {
+            value.inc();
         }
-        return false;
+        totalWords++;
     }
 }

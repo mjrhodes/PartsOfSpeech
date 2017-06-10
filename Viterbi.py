@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 
 def main():
@@ -19,17 +18,44 @@ def main():
 def viterbi(obs, states, start_p, trans_p, emit_p):
     V = [{}]
     for st in states:
-        V[0][st] = {"prob": start_p[st] * emit_p[st][obs[0]], "prev": None}
+        ########################### tweaked
+        if emit_p[st].has_key(obs[0]):
+            V[0][st] = {"prob": start_p[st] * emit_p[st][obs[0]], "prev": None}
+        else:
+            V[0][st] = {"prob": start_p[st] * subZeroProb(obs), "prev": None}
+        ###########################
     # Run Viterbi when t > 0
     for t in range(1, len(obs)):
         V.append({})
         for st in states:
-            max_tr_prob = max(V[t - 1][prev_st]["prob"] * trans_p[prev_st][st] for prev_st in states)
+
+            ########################### tweaked
+            max_tr_prob = 0
             for prev_st in states:
-                if V[t - 1][prev_st]["prob"] * trans_p[prev_st][st] == max_tr_prob:
-                    max_prob = max_tr_prob * emit_p[st][obs[t]]
+                if trans_p[prev_st].has_key(st):
+                    value = V[t - 1][prev_st]["prob"] * trans_p[prev_st][st]
+                else:
+                    value = V[t - 1][prev_st]["prob"] * subZeroProb(obs)
+                if (value > max_tr_prob):
+                    max_tr_prob = value
+            ###########################
+
+            for prev_st in states:
+
+                ########################### tweaked
+                if trans_p[prev_st].has_key(st):
+                    value = V[t - 1][prev_st]["prob"] * trans_p[prev_st][st]
+                else:
+                    value = V[t - 1][prev_st]["prob"] * subZeroProb(obs)
+                if value == max_tr_prob:
+                    if emit_p[st].has_key(obs[t]):
+                        max_prob = max_tr_prob * emit_p[st][obs[t]]
+                    else:
+                        max_prob = max_tr_prob * subZeroProb(obs)
                     V[t][st] = {"prob": max_prob, "prev": prev_st}
                     break
+                ###########################
+
     for line in dptable(V):
         print line
     opt = []
@@ -57,11 +83,7 @@ def dptable(V):
         yield "%.7s: " % state + " ".join("%.7s" % ("%f" % v[state]["prob"]) for v in V)
 
 
-def print_stuff(obs, states, start_p, trans_p, emit_p):
-    pprint(obs)
-    pprint(states)
-    pprint(start_p)
-    pprint(trans_p)
-    pprint(emit_p)
+def subZeroProb(obs):
+    return float(1/len(obs))
 
 main()
