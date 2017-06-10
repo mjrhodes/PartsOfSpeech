@@ -7,7 +7,6 @@ import java.util.Hashtable;
  * Created by michael on 6/9/17.
  */
 public class StructureLoader {
-    ArrayList<String> obs;
     ArrayList<String> states;
     Dictionary<String, Double> start_p;
     Dictionary<String, Dictionary<String, Double>> trans_p;
@@ -18,7 +17,6 @@ public class StructureLoader {
         System.out.println("Parsing File...");
         p.parse(fileName);
         System.out.println("Loading Structures...");
-        obs = new ArrayList<>(p.getWords());
         states = new ArrayList<>(p.getLabels());
         loadStart_p();
         loadTrans_p(p.getPosA());
@@ -61,10 +59,6 @@ public class StructureLoader {
             }
             emit_p.put(pos.getName(), innerDict);
         }
-    }
-
-    public ArrayList<String> getObs() {
-        return obs;
     }
 
     public ArrayList<String> getStates() {

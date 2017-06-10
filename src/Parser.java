@@ -9,12 +9,12 @@ import java.util.*;
  */
 public class Parser {
     ArrayList<POS> posA;
-    Set<String> words;
+    ArrayList<String> obs;
     Set<String> labels;
 
     public Parser() {
         posA = new ArrayList<>();
-        words = new HashSet<>();
+        obs = new ArrayList<>();
         labels = new HashSet<>();
     }
 
@@ -33,7 +33,7 @@ public class Parser {
             String word = getWord(element).toLowerCase();
             String label = getLabel(element);
 
-            words.add(word);
+            obs.add(word);
             labels.add(label);
 
             //Add word to part of speech stored in posA or add if not there
@@ -64,8 +64,9 @@ public class Parser {
         return posA;
     }
 
-    public Set<String> getWords() {
-        return words;
+    public ArrayList<String> getObs(String fileName) {
+        parse(fileName);
+        return obs;
     }
 
     public Set<String> getLabels() {

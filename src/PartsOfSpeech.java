@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by michael on 6/8/17.
  */
@@ -7,8 +9,10 @@ public class PartsOfSpeech {
         //Our eventual project main class
         StructureLoader loader = new StructureLoader();
         loader.loadStructures("training_dataset.txt");
+        Parser p = new Parser();
+        ArrayList<String> obs = p.getObs("training_dataset.txt");  //Pass file name of file to use for testing
         System.out.println("Serializing...");
-        ToJSON.serialize(loader.getObs(), "obs");
+        ToJSON.serialize(obs, "obs");
         ToJSON.serialize(loader.getStates(), "states");
         ToJSON.serialize(loader.getStart_p(), "start_p");
         ToJSON.serialize(loader.getTrans_p(), "trans_p");
