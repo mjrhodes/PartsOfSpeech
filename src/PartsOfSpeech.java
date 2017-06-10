@@ -8,9 +8,9 @@ public class PartsOfSpeech {
     public static void main(String[] args) {
         //Our eventual project main class
         StructureLoader loader = new StructureLoader();
-        loader.loadStructures("training_dataset.txt");
+        loader.loadStructures("test.txt");
         Parser p = new Parser();
-        ArrayList<String> obs = p.getObs("training_dataset.txt");  //Pass file name of file to use for testing
+        ArrayList<String> obs = p.getObs("test.txt");  //Pass file name of file to use for testing
         System.out.println("Serializing...");
         ToJSON.serialize(obs, "obs");
         ToJSON.serialize(loader.getStates(), "states");

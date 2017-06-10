@@ -77,6 +77,9 @@ public class Parser {
         //given word_label (cat_NN) strip off _label
         //return word (cat)
         int index = element.indexOf('_');
+        if (index == -1) {
+            return element;
+        }
         String s = element.substring(0,index);
         return s;
     }

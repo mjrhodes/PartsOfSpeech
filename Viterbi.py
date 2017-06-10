@@ -22,7 +22,7 @@ def viterbi(obs, states, start_p, trans_p, emit_p):
         if emit_p[st].has_key(obs[0]):
             V[0][st] = {"prob": start_p[st] * emit_p[st][obs[0]], "prev": None}
         else:
-            V[0][st] = {"prob": start_p[st] * subZeroProb(obs), "prev": None}
+            V[0][st] = {"prob": start_p[st] * subZeroProbForWord(obs), "prev": None}
         ###########################
     # Run Viterbi when t > 0
     for t in range(1, len(obs)):
@@ -35,7 +35,7 @@ def viterbi(obs, states, start_p, trans_p, emit_p):
                 if trans_p[prev_st].has_key(st):
                     value = V[t - 1][prev_st]["prob"] * trans_p[prev_st][st]
                 else:
-                    value = V[t - 1][prev_st]["prob"] * subZeroProb(obs)
+                    value = V[t - 1][prev_st]["prob"] * subZeroProbForState(states)
                 if (value > max_tr_prob):
                     max_tr_prob = value
             ###########################
@@ -46,12 +46,12 @@ def viterbi(obs, states, start_p, trans_p, emit_p):
                 if trans_p[prev_st].has_key(st):
                     value = V[t - 1][prev_st]["prob"] * trans_p[prev_st][st]
                 else:
-                    value = V[t - 1][prev_st]["prob"] * subZeroProb(obs)
+                    value = V[t - 1][prev_st]["prob"] * subZeroProbForState(states)
                 if value == max_tr_prob:
                     if emit_p[st].has_key(obs[t]):
                         max_prob = max_tr_prob * emit_p[st][obs[t]]
                     else:
-                        max_prob = max_tr_prob * subZeroProb(obs)
+                        max_prob = max_tr_prob * subZeroProbForWord(obs)
                     V[t][st] = {"prob": max_prob, "prev": prev_st}
                     break
                 ###########################
@@ -83,7 +83,12 @@ def dptable(V):
         yield "%.7s: " % state + " ".join("%.7s" % ("%f" % v[state]["prob"]) for v in V)
 
 
-def subZeroProb(obs):
-    return float(1/len(obs))
+def subZeroProbForWord(obs):
+    return float(1/(len(obs)**2))
+
+
+def subZeroProbForState(states):
+    return float(1/(len(states)**2))
+
 
 main()

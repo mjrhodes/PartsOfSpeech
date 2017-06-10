@@ -1,1 +1,14 @@
-["Healthy","Fever"]
+[
+  "DT",
+  "NN",
+  "JJ",
+  "CC",
+  "NNS",
+  "VBN",
+  "POS",
+  "IN",
+  "MD",
+  "VB",
+  ",",
+  "."
+]

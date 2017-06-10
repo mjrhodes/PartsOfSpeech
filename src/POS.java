@@ -7,15 +7,11 @@ public class POS {
     String name;
     Dictionary<String, Counter> followers;
     Dictionary<String, Counter> words;
-    int totalFollowers;
-    int totalWords;
 
     public POS(String name) {
         this.name = name;
         followers = new Hashtable<>();
         words = new Hashtable<>();
-        totalFollowers = 0;
-        totalWords = 0;
     }
 
     public String getName() {
@@ -30,14 +26,6 @@ public class POS {
         return words;
     }
 
-    public int getTotalFollowers() {
-        return totalFollowers;
-    }
-
-    public int getTotalWords() {
-        return totalWords;
-    }
-
     public void addFollower(String POSname) {
         Counter value = followers.get(POSname);
         if (value == null) {
@@ -45,7 +33,6 @@ public class POS {
         } else {
             value.inc();
         }
-        totalFollowers++;
     }
 
     public void addWord(String word) {
@@ -55,6 +42,23 @@ public class POS {
         } else {
             value.inc();
         }
-        totalWords++;
+    }
+
+    public int getTotalFollowers() {
+        int total = 0;
+        Enumeration<Counter> e = followers.elements();
+        while(e.hasMoreElements()) {
+            total += e.nextElement().getCount();
+        }
+        return total;
+    }
+
+    public int getTotalWords() {
+        int total = 0;
+        Enumeration<Counter> e = words.elements();
+        while(e.hasMoreElements()) {
+            total += e.nextElement().getCount();
+        }
+        return total;
     }
 }
