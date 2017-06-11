@@ -84,11 +84,11 @@ def dptable(V):
 
 
 def subZeroProbForWord(obs):
-    return float(1/(len(obs)**2))
+    return 1.0/(len(obs)**2)
 
 
 def subZeroProbForState(states):
-    return float(1/(len(states)**2))
+    return 1.0/(len(states)**2)
 
 
 main()
